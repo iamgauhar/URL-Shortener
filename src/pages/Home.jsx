@@ -4,10 +4,13 @@ import Hero from '../components/Hero'
 
 const Home = () => {
     return (
-        <div>
-            <Navbar />
-            <Hero />
-        </div>
+        <>
+            <div className='h-[100vh]'>
+                <Navbar />
+                <Hero />
+
+            </div>
+        </>
     )
 }
 
