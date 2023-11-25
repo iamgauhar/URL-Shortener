@@ -2,10 +2,11 @@ import React from 'react'
 
 import logo from '../assets/logo.png'
 import { Link } from 'react-router-dom'
+
 const Navbar = () => {
     return (
         <>
-            <div className='flex items-center justify-between bg-yellow-100 p-2 md:px-16 xl:px-32 '>
+            <div className='flex items-center justify-between bg-green-200 p-3 md:px-16 xl:px-32 '>
                 <div>
                     <Link to="/">
                         <div className='h-[40px]'>
