@@ -10,16 +10,29 @@ const Home = () => {
     const { shortID } = useParams()
 
     const getUrl = async (id) => {
-        const originalUrl = await fetch(`${baseApi}${id}`)
-        if (originalUrl.redirected) {
-            location.href = originalUrl.url
+        try {
+            if (id) {
+                const originalUrl = await fetch(`${baseApi}/${id}`)
+                const response = await originalUrl.json()
+                // console.log(response)
+                if (response.response) {
+                    location.href = response.redirect_url
+                }
+            }
+
+
+
+        } catch (err) {
+            console.log(err)
         }
+
     }
 
     useEffect(() => {
+        // console.log(shortID)
         getUrl(shortID)
-    }, [])
 
+    }, [])
     return (
         <>
             <div className='bg-green-50'>
