@@ -12,13 +12,14 @@ const Home = () => {
     const getUrl = async (id) => {
         const originalUrl = await fetch(`${baseApi}${id}`)
         if (originalUrl.redirected) {
-            window.open(originalUrl.url)
+            location.href = originalUrl.url
         }
     }
 
     useEffect(() => {
         getUrl(shortID)
     }, [])
+
     return (
         <>
             <div className='bg-green-50'>
