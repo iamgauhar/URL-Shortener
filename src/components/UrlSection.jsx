@@ -6,10 +6,10 @@ import { useUrlContext } from '../../context/urlContext'
 
 const UrlSection = () => {
 
-    const { url, setUrl, spinner, setSpinner, shortUrl, setShortURL, available, setAvailable } = useUrlContext();
+    const { url, setUrl, spinner, setSpinner, shortUrl, setShortURL, available, setAvailable, err, setErr } = useUrlContext();
 
 
-    const generateShortenUrl = async (link) => {
+    const generateShortenUrl = async () => {
         try {
             if (url) {
                 setSpinner(true)
@@ -22,10 +22,19 @@ const UrlSection = () => {
                 })
 
                 const response = await getShortUrl.json()
-                setShortURL(`${baseUrlClient}${response.response}`)
-                setAvailable(true)
-                setSpinner(false)
-                setUrl("")
+                if (response.error) {
+                    setErr(true)
+                    setSpinner(false)
+                    setTimeout(() => {
+                        setErr(false)
+                    }, 5000)
+                } else {
+                    setShortURL(`${baseUrlClient}${response.response}`)
+                    setAvailable(true)
+                    setSpinner(false)
+                    setUrl("")
+                }
+
             }
 
 
@@ -46,13 +55,13 @@ const UrlSection = () => {
                         <div className="flex rounded-xl shadow-sm">
                             <input onChange={(e) => {
                                 setUrl(e.target.value)
-                                console.log(url)
-                            }} type="url" placeholder='Enter your long URL...' name="hs-trailing-button-add-on" className="py-3 px-4 block w-full border border-green-200 rounded-s-lg text-sm focus:z-10 focus:border-green-500 focus:ring-green-500 disabled:opacity-50 outline-none disabled:pointer-events-none" />
+                            }} type="url" placeholder='Enter your long URL...' name="hs-trailing-button-add-on" className={`py-3 px-4 block w-full border ${err ? "border-red-200" : "border-green-200"} rounded-s-lg text-sm focus:z-10 focus:border-green-500 focus:ring-green-500 disabled:opacity-50 outline-none disabled:pointer-events-none`} />
                             <button onClick={() => {
                                 generateShortenUrl(url)
 
-                            }} type="button" className=" w-[33%] sm:w-[25%] md:w-[16%] py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-e-md border border-transparent bg-green-400 text-white hover:bg-green-500 disabled:opacity-50 disabled:pointer-events-none">
-                                {spinner ? <Spinner /> : "Short it!"}
+                            }} type="button" className={`w-[33%] sm:w-[25%] md:w-[16%] py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-e-md border border-transparent ${err ? "bg-red-400 hover:bg-red-500" : "bg-green-400 hover:bg-green-500"} text-white disabled:opacity-50 disabled:pointer-events-none`}>
+                                {spinner ? <Spinner /> : err ? "Invalid" : "Short it!"}
+
                             </button>
                         </div>
                     </div>
