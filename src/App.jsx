@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
-import Public from './pages/Public'
 import Navbar from './components/Navbar'
 import Login from './pages/Login'
+import Home from './pages/Home'
 
 function App() {
 
@@ -11,8 +11,8 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path='/' element={<Public />} />
-        <Route path='/:shortID' element={<Public />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/:shortID' element={<Home />} />
         <Route path='/login' element={<Login />} />
       </Routes>
     </>

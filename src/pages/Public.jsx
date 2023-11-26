@@ -4,7 +4,7 @@ import Home from './Home'
 const Public = () => {
     return (
         <div className=''>
-            <Home />
+            {/* <Home /> */}
         </div>
     )
 }

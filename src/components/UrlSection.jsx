@@ -3,7 +3,6 @@ import CopyClipboard from './CopyClipboard'
 import { baseUrlClient, generateShortUrl } from '../../utils/apiUrls'
 import Spinner from './Spinner'
 import { useUrlContext } from '../../context/urlContext'
-// import { useUrlContext } from '../../context/urlContext'
 
 const UrlSection = () => {
 
@@ -33,7 +32,7 @@ const UrlSection = () => {
     }
 
     return (
-        <div className='h-screen bg-green-100 p-3 md:px-16 xl:px-32 flex justify-center items-center'>
+        <div id='demo' className='h-screen bg-green-100 p-3 md:px-16 xl:px-32 flex justify-center items-center'>
             <div className='h-2/5 sm:h-3/5 w-full bg-white rounded-2xl px-4 sm:px-14 md:px-20 flex flex-col gap-6 justify-center shadow-md shadow-green-200 '>
                 <h1 className='text-center text-2xl font-semibold'>Experience the Ease of URL Shortening!</h1>
                 <div>
