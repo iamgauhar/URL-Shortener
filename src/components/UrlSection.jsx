@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import CopyClipboard from './CopyClipboard'
 import { baseUrlClient, generateShortUrl } from '../../utils/apiUrls'
+import Spinner from './Spinner'
+import { useUrlContext } from '../../context/urlContext'
 // import { useUrlContext } from '../../context/urlContext'
 
 const UrlSection = () => {
 
-    const [url, setUrl] = useState("")
-    const [shortUrl, setShortURL] = useState("")
-    const [available, setAvailable] = useState(false)
+    const { url, setUrl, spinner, setSpinner, shortUrl, setShortURL, available, setAvailable } = useUrlContext();
+
 
     const generateShortenUrl = async (link) => {
         try {
@@ -22,9 +23,12 @@ const UrlSection = () => {
             const response = await getShortUrl.json()
             setShortURL(`${baseUrlClient}${response.response}`)
             setAvailable(true)
+            setSpinner(false)
+            setUrl("")
 
         } catch (err) {
             console.log(err)
+            setSpinner(false)
         }
     }
 
@@ -38,9 +42,13 @@ const UrlSection = () => {
                         <div className="flex rounded-xl shadow-sm">
                             <input onChange={(e) => {
                                 setUrl(e.target.value)
+                                console.log(url)
                             }} type="text" placeholder='Enter your long URL...' name="hs-trailing-button-add-on" className="py-3 px-4 block w-full border border-green-200 rounded-s-lg text-sm focus:z-10 focus:border-green-500 focus:ring-green-500 disabled:opacity-50 outline-none disabled:pointer-events-none" />
-                            <button onClick={() => generateShortenUrl(url)} type="button" className=" w-[33%] sm:w-[25%] md:w-[16%] py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-e-md border border-transparent bg-green-400 text-white hover:bg-green-500 disabled:opacity-50 disabled:pointer-events-none">
-                                Short it!
+                            <button onClick={() => {
+                                generateShortenUrl(url)
+                                setSpinner(true)
+                            }} type="button" className=" w-[33%] sm:w-[25%] md:w-[16%] py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-e-md border border-transparent bg-green-400 text-white hover:bg-green-500 disabled:opacity-50 disabled:pointer-events-none">
+                                {spinner ? <Spinner /> : "Short it!"}
                             </button>
                         </div>
                     </div>

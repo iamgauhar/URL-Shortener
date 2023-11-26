@@ -1,21 +1,28 @@
 import { createContext, useContext, useState } from "react";
 
-const urlContext = createContext();
+const UrlContext = createContext();
 
-const urlContextProvider = ({ children }) => {
+const UrlContextProvider = ({ children }) => {
     const [url, setUrl] = useState("");
     const [msg, setMsg] = useState("")
+    const [shortUrl, setShortURL] = useState("")
+    const [available, setAvailable] = useState(false)
+    const [spinner, setSpinner] = useState(false)
+    const [iscopied, setIsCopied] = useState(false)
 
     return (
-        <urlContext.Provider value={{
+        <UrlContext.Provider value={{
             url, setUrl,
-            msg, setMsg,
+            shortUrl, setShortURL,
+            available, setAvailable,
+            spinner, setSpinner,
+            iscopied, setIsCopied,
         }}>
             {children}
-        </urlContext.Provider>
+        </UrlContext.Provider>
     )
 }
 
-const useUrlContext = () => useContext(urlContext)
+const useUrlContext = () => useContext(UrlContext)
 
-export { urlContext, urlContextProvider, useUrlContext }
+export { UrlContext, UrlContextProvider, useUrlContext }

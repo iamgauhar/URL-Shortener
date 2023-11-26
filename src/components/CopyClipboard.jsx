@@ -8,20 +8,20 @@ import { useUrlContext } from '../../context/urlContext'
 const CopyClipboard = (props) => {
 
     const { newUrl } = props
-    const [iscopied, setIsCopied] = useState(false)
-    // const { url, setUrl } = useUrlContext()
+    const { iscopied, setIsCopied } = useUrlContext()
     return (
         <div>
-            <div className=' flex justify-center items-center px-6 py-3 w-full md:w-1/2 bg-green-100 rounded-lg m-auto'>
+            <div className=' flex justify-center items-center transition-all duration-1000 px-6 py-3 w-full md:w-1/2 bg-green-100 rounded-lg m-auto'>
                 <input type="text" value={newUrl} className='w-full bg-transparent' name="" id="" disabled />
-                <button><img src={iscopied ? check : clipboard} className='h-6 w-6' alt="" onClick={() => {
+                <button><img src={iscopied ? check : clipboard} className='h-6 w-6 mr-2 hover:scale-105 transition-all duration-300' alt="" onClick={() => {
                     copy(newUrl)
                     setIsCopied(true)
                     setTimeout(() => {
                         setIsCopied(false)
                     }, 5000)
                 }} /></button>
-                <button><img src={exTab} className='h-6 w-6 ml-1' alt="" onClick={() => {
+                <span className='text-gray-300'>|</span>
+                <button><img src={exTab} className='h-6 w-6 ml-1 hover:scale-105 transition-all duration-300' alt="" onClick={() => {
                     window.open(newUrl)
                 }} />
                 </button>
