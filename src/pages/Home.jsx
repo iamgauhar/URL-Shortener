@@ -11,7 +11,7 @@ const Home = () => {
 
     const getUrl = async (id) => {
         try {
-            if (id && id.length === 6 && id !== "login") {
+            if (id && id.length === 6 && id !== "signup") {
                 const originalUrl = await fetch(`${baseApi}/${id}`)
                 const response = await originalUrl.json()
                 // console.log(response)
