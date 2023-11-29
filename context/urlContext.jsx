@@ -10,6 +10,8 @@ const UrlContextProvider = ({ children }) => {
     const [spinner, setSpinner] = useState(false)
     const [iscopied, setIsCopied] = useState(false)
     const [err, setErr] = useState(false)
+    const [isMsg, setIsMsg] = useState(false)
+    const [verified, setVerified] = useState(false)
 
     return (
         <UrlContext.Provider value={{
@@ -19,6 +21,9 @@ const UrlContextProvider = ({ children }) => {
             spinner, setSpinner,
             iscopied, setIsCopied,
             err, setErr,
+            isMsg, setIsMsg,
+            msg, setMsg,
+            verified, setVerified
         }}>
             {children}
         </UrlContext.Provider>

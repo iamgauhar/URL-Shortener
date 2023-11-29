@@ -1,81 +1,93 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+
+import { useUrlContext } from '../../context/urlContext'
 import { useAuthContext } from '../../context/autContext'
-import { useUrlContext } from '../../context/urlContext';
-import { Link } from 'react-router-dom';
-import sideBanner from '../assets/Computer login-rafiki.svg'
-import Spinner from '../components/Spinner';
-import MessageBox from '../components/MessageBox';
-import { login } from '../../utils/apiUrls';
 
-const Login = () => {
+import sideBanner from '../assets/My password-pana.svg'
+import MessageBox from './MessageBox'
+import { verifySetPassword } from '../../utils/apiUrls'
 
-    const { email, setEmail, password, setPassword } = useAuthContext();
-    const { spinner, setSpinner, msg, setMsg, isMsg, setIsMsg, verified, setVerified } = useUrlContext();
 
-    const doLogin = async (e) => {
+const SetPassword = () => {
+
+    const { newPassword, setNewPassword, repeatPassword, setRepeatPassword } = useAuthContext()
+    const { spinner, setSpinner, isMsg, setIsMsg, verified, setVerified, msg, setMsg } = useUrlContext();
+
+    const { userId, token } = useParams()
+
+    const navigate = useNavigate()
+
+    const verifyAndSetPassword = async (e) => {
         e.preventDefault()
-        setSpinner(true)
+        if (newPassword !== repeatPassword) {
+            setMsg("Enter same password in both inputs")
+            setIsMsg(true)
+            setVerified(true)
+            return;
+        }
+
         try {
-            const sigUser = await fetch(login, {
+            const setPassword = await fetch(`${verifySetPassword}/${userId}/${token}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ password: newPassword })
             })
-
-            const response = await sigUser.json()
-            console.log(response)
+            const response = await setPassword.json()
             if (response.status) {
-                setSpinner(false)
-                setEmail("")
-                setPassword("")
-                setIsMsg(true)
                 setMsg(response.message)
+                setIsMsg(true)
+                setSpinner(false)
+                setTimeout(() => {
+                    navigate("/login")
+                }, 5000);
             } else {
                 setMsg(response.message)
                 setIsMsg(true)
                 setVerified(true)
-                setSpinner(false)
             }
-        } catch (error) {
-            console.log(error);
-            setSpinner(false)
+        } catch (err) {
+            console.log(err);
         }
+
+
     }
+
 
     return (
         <div>
             <main className="flex lg:h-[90vh]">
                 <div className="w-full lg:w-[60%] py-8 px-3 md:p-14 flex items-center justify-center lg:justify-start">
                     <div className="py-8 px-3 w-[600px]">
-                        <h1 className="text-6xl font-bold">Login</h1>
+                        <h1 className="text-6xl font-bold">Set Password</h1>
 
-                        <form onSubmit={doLogin}>
-                            <div className="mt-10 pl-1 flex flex-col">
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    required
-                                    className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
+                        <form onSubmit={verifyAndSetPassword}>
                             <div className="mt-10 pl-1 flex flex-col">
                                 <label>Password</label>
                                 <input
                                     type="password"
+                                    required
                                     className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                            </div>
+                            <div className="mt-10 pl-1 flex flex-col">
+                                <label>Confirm password</label>
+                                <input
+                                    type="text"
+                                    className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
+                                    value={repeatPassword}
+                                    onChange={(e) => setRepeatPassword(e.target.value)}
                                 />
                             </div>
                             <button
                                 className="bg-green-400 hover:bg-green-500 active:bg-yellow-400 text-white font-semibold px-8 rounded-full py-3 my-4 transition-all duration-500"
 
                             >
-                                {spinner ? <Spinner /> : "Log in"}
+                                {spinner ? <Spinner /> : "Set password"}
                             </button>
                             <span className='ml-5 hover:underline text-[14px]'><Link to="/forgetPassword">Forget Password?</Link></span>
                         </form>
@@ -94,4 +106,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SetPassword
