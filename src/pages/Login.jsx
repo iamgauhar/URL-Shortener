@@ -1,12 +1,15 @@
 import React from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 import { useAuthContext } from '../../context/autContext'
 import { useUrlContext } from '../../context/urlContext';
-import { Link, useNavigate } from 'react-router-dom';
+
 import sideBanner from '../assets/Computer login-rafiki.svg'
 import Spinner from '../components/Spinner';
 import MessageBox from '../components/MessageBox';
+
 import { login } from '../../utils/apiUrls';
-import Cookies from 'js-cookie';
 
 const Login = () => {
 

@@ -1,11 +1,14 @@
 import React from 'react'
-import { useAuthContext } from '../../context/autContext'
 import { Link, useNavigate } from 'react-router-dom';
-import sideBanner from '../assets/Mobile login-pana.svg'
-import Spinner from '../components/Spinner';
+
+import { useAuthContext } from '../../context/autContext'
 import { useUrlContext } from '../../context/urlContext';
+
 import { signup } from '../../utils/apiUrls';
+
 import MessageBox from '../components/MessageBox';
+import Spinner from '../components/Spinner';
+import sideBanner from '../assets/Mobile login-pana.svg'
 
 const Signup = () => {
     const { name, setName, email, setEmail } = useAuthContext();
@@ -25,7 +28,6 @@ const Signup = () => {
             })
 
             const response = await sigUser.json()
-            console.log(response)
             if (response.status) {
                 setSpinner(false)
                 setEmail("")

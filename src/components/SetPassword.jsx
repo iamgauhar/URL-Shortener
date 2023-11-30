@@ -3,10 +3,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { useUrlContext } from '../../context/urlContext'
 import { useAuthContext } from '../../context/autContext'
+import { verifySetPassword } from '../../utils/apiUrls'
+
+import MessageBox from './MessageBox'
+import Spinner from './Spinner'
 
 import sideBanner from '../assets/My password-pana.svg'
-import MessageBox from './MessageBox'
-import { verifySetPassword } from '../../utils/apiUrls'
 
 
 const SetPassword = () => {
@@ -37,12 +39,15 @@ const SetPassword = () => {
             })
             const response = await setPassword.json()
             if (response.status) {
-                setMsg(response.message + " Redirecting in 7 sec.")
+                setMsg(response.message + " Redirecting in 5 sec.")
                 setIsMsg(true)
                 setSpinner(false)
                 setTimeout(() => {
+
+                    setIsMsg(false)
                     navigate("/login")
-                }, 7000);
+
+                }, 5000);
             } else {
                 setMsg(response.message)
                 setIsMsg(true)
@@ -79,7 +84,7 @@ const SetPassword = () => {
                             <div className="mt-10 pl-1 flex flex-col">
                                 <label>Confirm password</label>
                                 <input
-                                    type="text"
+                                    type="password"
                                     className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
                                     value={repeatPassword}
                                     onChange={(e) => setRepeatPassword(e.target.value)}

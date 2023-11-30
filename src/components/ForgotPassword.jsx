@@ -1,11 +1,12 @@
 import React from 'react'
+
 import { useAuthContext } from '../../context/autContext'
-import { Link } from 'react-router-dom';
-import sideBanner from '../assets/Mobile login-pana.svg'
-import Spinner from '../components/Spinner';
 import { useUrlContext } from '../../context/urlContext';
-import { forgotPassword, signup } from '../../utils/apiUrls';
+import { forgotPassword } from '../../utils/apiUrls';
+
+import Spinner from '../components/Spinner';
 import MessageBox from '../components/MessageBox';
+import sideBanner from '../assets/Mobile login-pana.svg'
 
 
 const ForgotPassword = () => {
