@@ -37,19 +37,21 @@ const SetPassword = () => {
             })
             const response = await setPassword.json()
             if (response.status) {
-                setMsg(response.message)
+                setMsg(response.message + " Redirecting in 7 sec.")
                 setIsMsg(true)
                 setSpinner(false)
                 setTimeout(() => {
                     navigate("/login")
-                }, 5000);
+                }, 7000);
             } else {
                 setMsg(response.message)
                 setIsMsg(true)
                 setVerified(true)
             }
         } catch (err) {
-            console.log(err);
+            setMsg(err)
+            setIsMsg(true)
+            setVerified(true)
         }
 
 

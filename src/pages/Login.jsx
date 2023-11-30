@@ -1,17 +1,19 @@
 import React from 'react'
 import { useAuthContext } from '../../context/autContext'
 import { useUrlContext } from '../../context/urlContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import sideBanner from '../assets/Computer login-rafiki.svg'
 import Spinner from '../components/Spinner';
 import MessageBox from '../components/MessageBox';
 import { login } from '../../utils/apiUrls';
+import Cookies from 'js-cookie';
 
 const Login = () => {
 
     const { email, setEmail, password, setPassword } = useAuthContext();
     const { spinner, setSpinner, msg, setMsg, isMsg, setIsMsg, verified, setVerified } = useUrlContext();
 
+    const navigate = useNavigate()
     const doLogin = async (e) => {
         e.preventDefault()
         setSpinner(true)
@@ -19,19 +21,20 @@ const Login = () => {
             const sigUser = await fetch(login, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password })
             })
 
             const response = await sigUser.json()
-            console.log(response)
+            console.log(response.user)
             if (response.status) {
+                Cookies.set('user', JSON.stringify(response.user))
                 setSpinner(false)
                 setEmail("")
                 setPassword("")
-                setIsMsg(true)
-                setMsg(response.message)
+                navigate('/welcome')
+
             } else {
                 setMsg(response.message)
                 setIsMsg(true)
@@ -39,7 +42,9 @@ const Login = () => {
                 setSpinner(false)
             }
         } catch (error) {
-            console.log(error);
+            setMsg(error)
+            setIsMsg(true)
+            setVerified(true)
             setSpinner(false)
         }
     }

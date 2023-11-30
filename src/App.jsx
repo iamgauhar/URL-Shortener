@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import Signup from './pages/Signup'
 import SetPassword from './components/SetPassword'
+import Welcome from './pages/Welcome'
+import ForgotPassword from './components/ForgotPassword'
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/verify/:userId/:token' element={<SetPassword />} />
+        <Route path='/welcome' element={<Welcome />} />
+        <Route path='/forgetPassword' element={<ForgotPassword />} />
       </Routes>
     </>
   )

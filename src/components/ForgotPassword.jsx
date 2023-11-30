@@ -1,69 +1,60 @@
 import React from 'react'
 import { useAuthContext } from '../../context/autContext'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import sideBanner from '../assets/Mobile login-pana.svg'
 import Spinner from '../components/Spinner';
 import { useUrlContext } from '../../context/urlContext';
-import { signup } from '../../utils/apiUrls';
+import { forgotPassword, signup } from '../../utils/apiUrls';
 import MessageBox from '../components/MessageBox';
 
-const Signup = () => {
-    const { name, setName, email, setEmail } = useAuthContext();
-    const { spinner, setSpinner, isMsg, setIsMsg, msg, setMsg, setFailure } = useUrlContext();
 
+const ForgotPassword = () => {
+
+    const { email, setEmail } = useAuthContext();
+    const { spinner, setSpinner, isMsg, setIsMsg, msg, setMsg, setVerified } = useUrlContext();
 
     const sendMail = async (e) => {
         e.preventDefault()
         setSpinner(true)
         try {
-            const sigUser = await fetch(signup, {
+            const resetPass = await fetch(forgotPassword, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ email, first_name: name })
+                body: JSON.stringify({ email })
             })
 
-            const response = await sigUser.json()
-            console.log(response)
+            const response = await resetPass.json()
+            // console.log(response)
             if (response.status) {
                 setSpinner(false)
                 setEmail("")
-                setName("")
                 setIsMsg(true)
                 setMsg(response.message)
-
             } else {
                 setMsg(response.message)
                 setIsMsg(true)
-                setFailure(true)
+                setVerified(true)
                 setSpinner(false)
             }
         } catch (error) {
             setMsg(error)
             setIsMsg(true)
-            setFailure(true)
+            setVerified(true)
             setSpinner(false)
         }
     }
+
 
     return (
         <main className="flex lg:h-[90vh]">
             <div className="w-full lg:w-[60%] py-8 px-3 md:p-14 flex items-center justify-center lg:justify-start">
                 <div className="py-8 px-3 w-[600px]">
-                    <h1 className="text-6xl font-bold">Sign up</h1>
+                    <h1 className="text-6xl font-bold">Forgot Password</h1>
 
                     <form onSubmit={sendMail}>
-                        <div className="mt-10 pl-1 flex flex-col">
-                            <label>Full Name</label>
-                            <input
-                                type="text"
-                                required
-                                className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
+
                         <div className="mt-10 pl-1 flex flex-col">
                             <label>Email</label>
                             <input
@@ -77,9 +68,8 @@ const Signup = () => {
                             className="bg-green-400 hover:bg-green-500 active:bg-yellow-400 text-white font-semibold px-8 rounded-full py-3 my-4 transition-all duration-500"
 
                         >
-                            {spinner ? <Spinner /> : "Sign up"}
+                            {spinner ? <Spinner /> : "Send E-mail"}
                         </button>
-                        <span className='ml-5 hover:underline text-[14px]'><Link to="/forgetPassword">Forget Password?</Link></span>
                     </form>
 
                 </div>
@@ -92,8 +82,7 @@ const Signup = () => {
             </div>
             {isMsg ? <MessageBox message={msg} /> : ""}
         </main>
-
     )
 }
 
-export default Signup
+export default ForgotPassword

@@ -12,6 +12,9 @@ const UrlContextProvider = ({ children }) => {
     const [err, setErr] = useState(false)
     const [isMsg, setIsMsg] = useState(false)
     const [verified, setVerified] = useState(false)
+    const [failure, setFailure] = useState(false)
+    const [redirect, setRedirect] = useState(false)
+
 
     return (
         <UrlContext.Provider value={{
@@ -23,7 +26,9 @@ const UrlContextProvider = ({ children }) => {
             err, setErr,
             isMsg, setIsMsg,
             msg, setMsg,
-            verified, setVerified
+            verified, setVerified,
+            redirect, setRedirect,
+            failure, setFailure
         }}>
             {children}
         </UrlContext.Provider>
