@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import CopyClipboard from './CopyClipboard'
-import { baseUrlClient, generateShortUrl } from '../../utils/apiUrls'
+import { baseUrlClient, generateOpenShortUrl } from '../../utils/apiUrls'
 import Spinner from './Spinner'
 import { useUrlContext } from '../../context/urlContext'
 
@@ -13,7 +13,7 @@ const UrlSection = () => {
         try {
             if (url) {
                 setSpinner(true)
-                const getShortUrl = await fetch(generateShortUrl, {
+                const getShortUrl = await fetch(generateOpenShortUrl, {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json"
@@ -66,7 +66,7 @@ const UrlSection = () => {
                         </div>
                     </div>
                 </div>
-                {available ? <CopyClipboard newUrl={shortUrl} /> : ""}
+                {available ? <CopyClipboard newUrl={shortUrl} bg={"green"} /> : ""}
             </div>
         </div>
     )

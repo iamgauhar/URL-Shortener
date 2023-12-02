@@ -1,12 +1,34 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import { useAuthContext } from '../../context/autContext'
 
 const Navbar = () => {
+
+    const { isLoggedIn, setLoggedIn, name, setName } = useAuthContext()
+
+    const navigate = useNavigate()
+    const user = Cookies.get().user
+    const userCred = user ? JSON.parse(user) : undefined
+
+    const logOut = () => {
+        Cookies.remove('user')
+        location.reload()
+        // setLoggedIn(false)
+    }
+
+    useEffect(() => {
+        if (userCred?.token) {
+            setLoggedIn(true)
+            setName(userCred.name)
+            navigate('/welcome')
+        }
+    }, [setLoggedIn])
     return (
         <>
-            <div className='flex items-center justify-between bg-green-200 p-3 md:px-16 xl:px-32 '>
+            <div className={`flex items-center justify-between ${isLoggedIn ? "bg-orange-100" : "bg-green-200"} p-3 md:px-16 xl:px-32 `}>
                 <div>
                     <Link to="/">
                         <div className='h-[40px]'>
@@ -15,17 +37,28 @@ const Navbar = () => {
                     </Link>
                 </div>
                 <div>
-                    <ul className='flex gap-2'>
+                    {
+                        isLoggedIn ?
 
-                        <li>
+                            <ul className='flex items-center gap-4'>
+                                <li>
+                                    <h1 className='text-green-400'>Hi, <span className='text-orange-600 font-semibold text-lg'>{name}</span></h1>
+                                </li>
+
+
+                                <li>
+                                    <button onClick={logOut} className='bg-white px-4 py-1 cursor-pointer rounded-sm border border-black hover:bg-orange-500 transition-colors duration-500 hover:text-white hover:border-white'>
+                                        Logout
+                                    </button>
+                                </li>
+                            </ul>
+                            :
                             <Link to="/login">
-                                <button className="bg-neutral-950 text-orange-500 border border-orange-500 border-b-1 font-medium overflow-hidden relative px-4 py-2 rounded-full hover:brightness-150 hover:border hover:border-b active:opacity-75 outline-none duration-300 group">
-                                    <span className="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                                <button className='bg-white px-4 py-1 cursor-pointer rounded-sm border border-black hover:bg-green-500 transition-colors duration-500 hover:text-white hover:border-white'>
                                     LOGIN
                                 </button>
                             </Link>
-                        </li>
-                    </ul>
+                    }
                 </div>
             </div>
         </>
