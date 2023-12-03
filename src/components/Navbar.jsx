@@ -15,8 +15,8 @@ const Navbar = () => {
 
     const logOut = () => {
         Cookies.remove('user')
+        setLoggedIn(false)
         location.reload()
-        // setLoggedIn(false)
     }
 
     useEffect(() => {
@@ -24,6 +24,8 @@ const Navbar = () => {
             setLoggedIn(true)
             setName(userCred.name)
             navigate('/welcome')
+        } else {
+            navigate('/')
         }
     }, [setLoggedIn])
     return (

@@ -14,6 +14,10 @@ const UrlContextProvider = ({ children }) => {
     const [verified, setVerified] = useState(false)
     const [failure, setFailure] = useState(false)
     const [redirect, setRedirect] = useState(false)
+    const [isTable, setIsTable] = useState(false)
+    const [btnLoading, setBtnLoading] = useState(false)
+    const [allUrls, setAllUrls] = useState([])
+    const [nor, setNor] = useState(0)
 
 
     return (
@@ -28,7 +32,11 @@ const UrlContextProvider = ({ children }) => {
             msg, setMsg,
             verified, setVerified,
             redirect, setRedirect,
-            failure, setFailure
+            failure, setFailure,
+            allUrls, setAllUrls,
+            nor, setNor,
+            isTable, setIsTable,
+            btnLoading, setBtnLoading
         }}>
             {children}
         </UrlContext.Provider>

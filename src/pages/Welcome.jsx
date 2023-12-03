@@ -2,12 +2,15 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import CopyClipboard from '../components/CopyClipboard'
-import { baseUrlClient, generatePrivateShortUrl } from '../../utils/apiUrls'
+import { baseUrlClient, deleteUrl, generatePrivateShortUrl, getMyUrls } from '../../utils/apiUrls'
 import Spinner from '../components/Spinner'
 import { useUrlContext } from '../../context/urlContext'
+import { useAuthContext } from '../../context/autContext'
+import Table from '../components/Table'
 
 const Welcome = () => {
-    const { url, setUrl, spinner, setSpinner, shortUrl, setShortURL, available, setAvailable, err, setErr } = useUrlContext();
+    const { url, setUrl, spinner, setSpinner, shortUrl, setShortURL, available, setAvailable, err, setErr, allUrls, setAllUrls, nor, setNor, isTable, setIsTable } = useUrlContext();
+    const { isLoggedIn, setLoggedIn } = useAuthContext()
 
     const navigate = useNavigate()
     const user = Cookies.get().user
@@ -50,14 +53,48 @@ const Welcome = () => {
 
     }
 
+    const myUrls = async (limit, offset) => {
+        try {
+            setIsTable(true)
+            const getUrls = await fetch(`${getMyUrls}/${limit}/${offset}`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            const response = await getUrls.json()
+            if (response.status) {
+                setAllUrls(response.response)
+                setNor(response.length)
+                setIsTable(false)
+            } else {
+                setMsg(response.message)
+                setIsMsg(true)
+                setVerified(true)
+                setIsTable(false)
+            }
+
+        } catch (error) {
+            setMsg(error.message)
+            setIsMsg(true)
+            setVerified(true)
+            setSpinner(false)
+        }
+    }
+
+
     useEffect(() => {
         if (token === undefined) {
             navigate('/')
         }
-    }, [])
+
+        myUrls(10, 0)
+
+    }, [shortUrl])
     return (
-        <div className=' bg-orange-100 p-3 md:px-16 xl:px-32 flex justify-center items-center'>
-            <div className='w-full bg-white rounded-2xl py-12 px-4 sm:px-14 md:px-20 flex flex-col gap-6 justify-center shadow-md shadow-orange-200 '>
+        <div className=' bg-orange-100 p-3 md:px-16 xl:px-32 flex flex-col justify-center items-center'>
+            <div className='w-full bg-white rounded-2xl py-12 my-4 px-4 sm:px-14 md:px-20 flex flex-col gap-6 justify-center shadow-md shadow-orange-200 '>
                 <h1 className='text-center text-2xl font-semibold transition-transform duration-1000'>Experience the Ease of URL Shortening!</h1>
                 <div className='transition-all duration-1000'>
                     <div>
@@ -78,6 +115,12 @@ const Welcome = () => {
                 </div>
                 {available ? <CopyClipboard newUrl={shortUrl} bg={"orange"} /> : ""}
             </div>
+            <div className='w-full bg-white my-6 p-4 rounded-2xl shadow-md shadow-orange-200 transition-transform duration-500'>
+
+                {isTable ? <Spinner color={isTable} /> : <Table allUrls={allUrls} length={nor} token={token} />}
+
+            </div>
+
         </div>
     )
 }

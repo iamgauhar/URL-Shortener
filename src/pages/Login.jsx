@@ -13,7 +13,7 @@ import { login } from '../../utils/apiUrls';
 
 const Login = () => {
 
-    const { email, setEmail, password, setPassword } = useAuthContext();
+    const { email, setEmail, password, setPassword, isLoggedIn, setLoggedIn } = useAuthContext();
     const { spinner, setSpinner, msg, setMsg, isMsg, setIsMsg, verified, setVerified } = useUrlContext();
 
     const navigate = useNavigate()
@@ -36,6 +36,7 @@ const Login = () => {
                 setSpinner(false)
                 setEmail("")
                 setPassword("")
+                setLoggedIn(true)
                 navigate('/welcome')
 
             } else {
@@ -45,7 +46,7 @@ const Login = () => {
                 setSpinner(false)
             }
         } catch (error) {
-            setMsg(error)
+            setMsg(error.message)
             setIsMsg(true)
             setVerified(true)
             setSpinner(false)

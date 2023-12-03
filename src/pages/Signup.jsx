@@ -42,7 +42,7 @@ const Signup = () => {
                 setSpinner(false)
             }
         } catch (error) {
-            setMsg(error)
+            setMsg(error.message)
             setIsMsg(true)
             setFailure(true)
             setSpinner(false)
