@@ -21,11 +21,8 @@ const Navbar = () => {
 
     useEffect(() => {
         if (userCred?.token) {
-            setLoggedIn(true)
             setName(userCred.name)
-            navigate('/welcome')
-        } else {
-            navigate('/')
+            setLoggedIn(true)
         }
     }, [setLoggedIn])
     return (

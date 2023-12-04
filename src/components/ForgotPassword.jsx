@@ -1,18 +1,18 @@
 import React from 'react'
 
 import { useAuthContext } from '../../context/autContext'
-import { useUrlContext } from '../../context/urlContext';
 import { forgotPassword } from '../../utils/apiUrls';
 
 import Spinner from '../components/Spinner';
 import MessageBox from '../components/MessageBox';
 import sideBanner from '../assets/Mobile login-pana.svg'
+import { useUtilityContext } from '../../context/utilityContext';
 
 
 const ForgotPassword = () => {
 
     const { email, setEmail } = useAuthContext();
-    const { spinner, setSpinner, isMsg, setIsMsg, msg, setMsg, setVerified } = useUrlContext();
+    const { spinner, setSpinner, isMsg, setIsMsg, msg, setMsg, setVerified } = useUtilityContext();
 
     const sendMail = async (e) => {
         e.preventDefault()

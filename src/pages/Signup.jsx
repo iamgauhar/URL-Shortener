@@ -9,10 +9,11 @@ import { signup } from '../../utils/apiUrls';
 import MessageBox from '../components/MessageBox';
 import Spinner from '../components/Spinner';
 import sideBanner from '../assets/Mobile login-pana.svg'
+import { useUtilityContext } from '../../context/utilityContext';
 
 const Signup = () => {
     const { name, setName, email, setEmail } = useAuthContext();
-    const { spinner, setSpinner, isMsg, setIsMsg, msg, setMsg, setFailure } = useUrlContext();
+    const { spinner, setSpinner, isMsg, setIsMsg, msg, setMsg, setFailure } = useUtilityContext();
 
 
     const sendMail = async (e) => {

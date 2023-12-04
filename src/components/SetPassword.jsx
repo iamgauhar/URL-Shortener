@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-
-import { useUrlContext } from '../../context/urlContext'
 import { useAuthContext } from '../../context/autContext'
 import { verifySetPassword } from '../../utils/apiUrls'
 
@@ -9,12 +7,13 @@ import MessageBox from './MessageBox'
 import Spinner from './Spinner'
 
 import sideBanner from '../assets/My password-pana.svg'
+import { useUtilityContext } from '../../context/utilityContext'
 
 
 const SetPassword = () => {
 
     const { newPassword, setNewPassword, repeatPassword, setRepeatPassword } = useAuthContext()
-    const { spinner, setSpinner, isMsg, setIsMsg, verified, setVerified, msg, setMsg } = useUrlContext();
+    const { spinner, setSpinner, isMsg, setIsMsg, verified, setVerified, msg, setMsg } = useUtilityContext();
 
     const { userId, token } = useParams()
 
@@ -22,6 +21,7 @@ const SetPassword = () => {
 
     const verifyAndSetPassword = async (e) => {
         e.preventDefault()
+        console.log(token)
         if (newPassword !== repeatPassword) {
             setMsg("Enter same password in both inputs")
             setIsMsg(true)

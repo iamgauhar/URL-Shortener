@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import { useParams, useNavigate } from 'react-router-dom'
 import Hero from '../components/Hero'
 import UrlSection from '../components/UrlSection'
 import Footer from '../components/Footer'
 import { baseApi } from '../../utils/apiUrls'
+import Cookies from 'js-cookie'
 
 const Home = () => {
     const { shortID } = useParams()
+    const navigate = useNavigate()
+    const user = Cookies.get().user
+    const token = user ? JSON.parse(user).token : undefined
 
     const getUrl = async (id) => {
         try {
@@ -31,6 +34,11 @@ const Home = () => {
     useEffect(() => {
         // console.log(shortID)
         getUrl(shortID)
+        if (token === undefined) {
+            navigate('/')
+        } else {
+            navigate('/welcome')
+        }
 
     }, [])
     return (

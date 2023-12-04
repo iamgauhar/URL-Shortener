@@ -2,15 +2,16 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import CopyClipboard from '../components/CopyClipboard'
-import { baseUrlClient, deleteUrl, generatePrivateShortUrl, getMyUrls } from '../../utils/apiUrls'
+import { baseUrlClient, generatePrivateShortUrl, getMyUrls } from '../../utils/apiUrls'
 import Spinner from '../components/Spinner'
 import { useUrlContext } from '../../context/urlContext'
-import { useAuthContext } from '../../context/autContext'
 import Table from '../components/Table'
+import { useUtilityContext } from '../../context/utilityContext'
 
 const Welcome = () => {
-    const { url, setUrl, spinner, setSpinner, shortUrl, setShortURL, available, setAvailable, err, setErr, allUrls, setAllUrls, nor, setNor, isTable, setIsTable } = useUrlContext();
-    const { isLoggedIn, setLoggedIn } = useAuthContext()
+    const { spinner, setSpinner, err, setErr, nor, setNor, isTable, setIsTable } = useUtilityContext();
+    const { url, setUrl, shortUrl, setShortURL, allUrls, setAllUrls, available, setAvailable } = useUrlContext();
+
 
     const navigate = useNavigate()
     const user = Cookies.get().user
@@ -87,9 +88,11 @@ const Welcome = () => {
     useEffect(() => {
         if (token === undefined) {
             navigate('/')
+        } else {
+            myUrls(10, 0)
         }
 
-        myUrls(10, 0)
+
 
     }, [shortUrl])
     return (
@@ -118,7 +121,6 @@ const Welcome = () => {
             <div className='w-full bg-white my-6 p-4 rounded-2xl shadow-md shadow-orange-200 transition-transform duration-500'>
 
                 {isTable ? <Spinner color={isTable} /> : <Table allUrls={allUrls} length={nor} token={token} />}
-
             </div>
 
         </div>

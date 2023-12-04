@@ -2,12 +2,14 @@ import React from 'react'
 import { deleteUrl } from '../../utils/apiUrls'
 import { useUrlContext } from '../../context/urlContext'
 import MessageBox from './MessageBox'
+import { useUtilityContext } from '../../context/utilityContext'
 
 const Table = ({ allUrls, length, token }) => {
 
-    const { isMsg, setIsMsg, msg, setMsg } = useUrlContext()
+    const { setAllUrls } = useUrlContext()
+    const { isMsg, setIsMsg, msg, setMsg, isTable, setIsTable } = useUtilityContext()
 
-    const deleteThisUrl = async (uid) => {
+    const deleteThisUrl = async (uid, i) => {
         try {
             const deleteNow = await fetch(`${deleteUrl}/${uid}`, {
                 method: "DELETE",
@@ -18,6 +20,8 @@ const Table = ({ allUrls, length, token }) => {
             })
             const response = await deleteNow.json()
             if (response.status) {
+                allUrls.splice(i, 1)
+                setAllUrls(allUrls)
                 setIsMsg(true)
                 setMsg(response.message)
 
@@ -25,7 +29,6 @@ const Table = ({ allUrls, length, token }) => {
                 setMsg(response.message)
                 setIsMsg(true)
             }
-            console.log(response)
         } catch (error) {
             setMsg(error.message)
             setIsMsg(true)
@@ -62,9 +65,9 @@ const Table = ({ allUrls, length, token }) => {
                                 <tbody className="divide-y divide-gray-200 ">
 
                                     {
-                                        allUrls?.map((item) => {
+                                        allUrls?.map((item, idx) => {
                                             return (
-                                                <tr key={item.uid}>
+                                                <tr key={item.uid} className='hover:bg-orange-50'>
 
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
                                                         <a href={`https://sho-rt.netlify.app/${item.short_url}`} target="_blank" rel="noopener noreferrer">
@@ -77,7 +80,7 @@ const Table = ({ allUrls, length, token }) => {
                                                     <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                                         <button type="button" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-sky-400 hover:text-sky-600 disabled:opacity-50 disabled:pointer-events-none ">Update</button>
                                                         <span className='text-gray-300 mx-1'>|</span>
-                                                        <button onClick={() => deleteThisUrl(item.uid)} type="button" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-orange-400 hover:text-orange-600 disabled:opacity-50 disabled:pointer-events-none ">Delete</button>
+                                                        <button onClick={() => deleteThisUrl(item.uid, idx)} type="button" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-orange-400 hover:text-orange-600 disabled:opacity-50 disabled:pointer-events-none ">Delete</button>
                                                     </td>
                                                 </tr>
                                             )

@@ -1,9 +1,10 @@
 import React from 'react'
 import { X } from 'lucide-react';
 import { useUrlContext } from '../../context/urlContext';
+import { useUtilityContext } from '../../context/utilityContext';
 
 const MessageBox = ({ message }) => {
-    const { setIsMsg, failure, setFailure } = useUrlContext();
+    const { setIsMsg, failure, setFailure } = useUtilityContext();
     return (
         <>
             <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex justify-center items-center '>

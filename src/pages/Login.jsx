@@ -3,18 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import { useAuthContext } from '../../context/autContext'
-import { useUrlContext } from '../../context/urlContext';
 
 import sideBanner from '../assets/Computer login-rafiki.svg'
 import Spinner from '../components/Spinner';
 import MessageBox from '../components/MessageBox';
 
 import { login } from '../../utils/apiUrls';
+import { useUtilityContext } from '../../context/utilityContext';
 
 const Login = () => {
 
     const { email, setEmail, password, setPassword, isLoggedIn, setLoggedIn } = useAuthContext();
-    const { spinner, setSpinner, msg, setMsg, isMsg, setIsMsg, verified, setVerified } = useUrlContext();
+    const { spinner, setSpinner, msg, setMsg, isMsg, setIsMsg, verified, setVerified } = useUtilityContext();
 
     const navigate = useNavigate()
     const doLogin = async (e) => {
@@ -30,7 +30,7 @@ const Login = () => {
             })
 
             const response = await sigUser.json()
-            console.log(response.user)
+            // const thisUser = response.user
             if (response.status) {
                 Cookies.set('user', JSON.stringify(response.user))
                 setSpinner(false)

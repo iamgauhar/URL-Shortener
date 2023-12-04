@@ -3,10 +3,12 @@ import CopyClipboard from './CopyClipboard'
 import { baseUrlClient, generateOpenShortUrl } from '../../utils/apiUrls'
 import Spinner from './Spinner'
 import { useUrlContext } from '../../context/urlContext'
+import { useUtilityContext } from '../../context/utilityContext'
 
 const UrlSection = () => {
 
-    const { url, setUrl, spinner, setSpinner, shortUrl, setShortURL, available, setAvailable, err, setErr } = useUrlContext();
+    const { spinner, setSpinner, available, setAvailable, err, setErr } = useUtilityContext();
+    const { url, setUrl, shortUrl, setShortURL } = useUrlContext();
 
 
     const generateShortenUrl = async () => {
