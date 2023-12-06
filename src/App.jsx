@@ -8,6 +8,7 @@ import Signup from './pages/Signup'
 import SetPassword from './components/SetPassword'
 import Welcome from './pages/Welcome'
 import ForgotPassword from './components/ForgotPassword'
+import Redirecter from './pages/Redirecter'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path='/verify/:userId/:token' element={<SetPassword />} />
         <Route path='/welcome' element={<Welcome />} />
         <Route path='/forgetPassword' element={<ForgotPassword />} />
+        <Route path='/r' element={<Redirecter />} />
       </Routes>
     </>
   )

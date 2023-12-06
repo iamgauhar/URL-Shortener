@@ -1,12 +1,16 @@
 import React from 'react'
+import { ExternalLink, ClipboardCopy } from 'lucide-react'
+
 import { deleteUrl } from '../../utils/apiUrls'
 import { useUrlContext } from '../../context/urlContext'
 import MessageBox from './MessageBox'
 import { useUtilityContext } from '../../context/utilityContext'
+import UpdateUrl from './UpdateUrl'
+import copy from 'copy-to-clipboard'
 
 const Table = ({ allUrls, length, token }) => {
 
-    const { setAllUrls } = useUrlContext()
+    const { setAllUrls, urlId, setUrlId, openUrlInput, setOpenUrlInput } = useUrlContext()
     const { isMsg, setIsMsg, msg, setMsg, isTable, setIsTable } = useUtilityContext()
 
     const deleteThisUrl = async (uid, i) => {
@@ -69,16 +73,32 @@ const Table = ({ allUrls, length, token }) => {
                                             return (
                                                 <tr key={item.uid} className='hover:bg-orange-50'>
 
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
-                                                        <a href={`https://sho-rt.netlify.app/${item.short_url}`} target="_blank" rel="noopener noreferrer">
+                                                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium ">
+                                                        {/* <a href={`https://sho-rt.netlify.app/${item.short_url}`} target="_blank" rel="noopener noreferrer">
                                                             {`sho-rt.netlify.app/${item.short_url}`}
-                                                        </a>
+                                                        </a> */}
+
+                                                        <div className={` flex items-center transition-all duration-1000 px-2 py-1 w-[230px] bg-orange-100 hover:bg-green-200 rounded-lg `}>
+                                                            <input type="text" value={`sho-rt.netlify.app/${item.short_url}`} className='w-full bg-transparent' name="" id="" disabled />
+                                                            <button className='ml-1' onClick={() => {
+                                                                copy(`https://sho-rt.netlify.app/${item.short_url}`)
+                                                            }} ><ClipboardCopy className='w-5' /> </button>
+                                                            <span className='text-gray-300'>|</span>
+                                                            <button className='' onClick={() => {
+                                                                window.open(`https://sho-rt.netlify.app/${item.short_url}`)
+                                                            }} >
+                                                                <ExternalLink className='w-5' />
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-ellipsis "><p className='truncate max-w-xs'>{item.original_url}</p></td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{item.created_at.split("T")[0]}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{item.count_clicks}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                                        <button type="button" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-sky-400 hover:text-sky-600 disabled:opacity-50 disabled:pointer-events-none ">Update</button>
+                                                        <button onClick={() => {
+                                                            setUrlId(item.uid);
+                                                            setOpenUrlInput(true)
+                                                        }} type="button" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-sky-400 hover:text-sky-600 disabled:opacity-50 disabled:pointer-events-none ">Update</button>
                                                         <span className='text-gray-300 mx-1'>|</span>
                                                         <button onClick={() => deleteThisUrl(item.uid, idx)} type="button" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-orange-400 hover:text-orange-600 disabled:opacity-50 disabled:pointer-events-none ">Delete</button>
                                                     </td>
@@ -110,6 +130,8 @@ const Table = ({ allUrls, length, token }) => {
                 </div>
             </div>
             {isMsg ? <MessageBox message={msg} /> : ""}
+            {openUrlInput ? <UpdateUrl uid={urlId} token={token} /> : ""}
+
         </div>
 
     )

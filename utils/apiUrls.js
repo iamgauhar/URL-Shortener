@@ -8,6 +8,7 @@ export const generateOpenShortUrl = `${baseApi}/url/generate/public`
 export const generatePrivateShortUrl = `${baseApi}/url/generate/private`
 export const getMyUrls = `${baseApi}/url/all-urls`
 export const deleteUrl = `${baseApi}/url/delete`
+export const updateUrl = `${baseApi}/url/update`
 export const signup = `${baseApi}/auth/signup`
 export const login = `${baseApi}/auth/login`
 export const verifySetPassword = `${baseApi}/auth/set-password`
