@@ -120,7 +120,7 @@ const Welcome = () => {
                     </div>
                     {available ? <CopyClipboard newUrl={shortUrl} bg={"orange"} /> : ""}
                 </div>
-                <div className='w-full bg-white my-6 p-4 rounded-2xl shadow-md shadow-orange-200 transition-transform duration-500'>
+                <div className='w-full bg-white my-4 p-4 rounded-2xl shadow-md shadow-orange-200 transition-transform duration-500'>
 
                     {isTable ? <Spinner color={isTable} /> : <Table allUrls={allUrls} length={nor} token={token} />}
                 </div>
