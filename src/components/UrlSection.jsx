@@ -7,8 +7,8 @@ import { useUtilityContext } from '../../context/utilityContext'
 
 const UrlSection = () => {
 
-    const { spinner, setSpinner, available, setAvailable, err, setErr } = useUtilityContext();
-    const { url, setUrl, shortUrl, setShortURL } = useUrlContext();
+    const { spinner, setSpinner, err, setErr } = useUtilityContext();
+    const { url, setUrl, shortUrl, setShortURL, available, setAvailable } = useUrlContext();
 
 
     const generateShortenUrl = async () => {

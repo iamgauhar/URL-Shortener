@@ -8,8 +8,6 @@ import Spinner from '../components/Spinner'
 import { useUrlContext } from '../../context/urlContext'
 import Table from '../components/Table'
 import { useUtilityContext } from '../../context/utilityContext'
-import UpdatUrl from '../components/UpdateUrl'
-import UpdateUrl from '../components/UpdateUrl'
 
 const Welcome = () => {
     const { spinner, setSpinner, err, setErr, nor, setNor, isTable, setIsTable } = useUtilityContext();
